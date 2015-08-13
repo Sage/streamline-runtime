@@ -1,0 +1,8 @@
+{
+  "name": "streamline-runtime",
+  "version": "1.0.0",
+  "dependencies": {
+    "regenerator-runtime-only": "^0.8.36",
+    "bluebird": "^2.9.34"	
+  }
+}
