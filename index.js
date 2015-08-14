@@ -1,2 +1,2 @@
 "use strict";
-module.exports = require('./lib/runtime');
+module.exports = require('./lib/runtime-promise');
