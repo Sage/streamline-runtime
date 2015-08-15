@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "regenerator-runtime-only": "^0.8.36",
-    "bluebird": "^2.9.34"	
+    "bluebird": "^2.9.34",
+    "colors": "~1.1.2"
   }
 }
