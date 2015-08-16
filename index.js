@@ -1,2 +1,2 @@
 "use strict";
-module.exports = require('./lib/runtime-callbacks');
+module.exports = require('./lib/runtime-await');
