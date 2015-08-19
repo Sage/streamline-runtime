@@ -4,7 +4,6 @@
   "dependencies": {
     "regenerator-runtime-only": "^0.8.36",
     "es6-promise": "^3.0.2",
-    "galaxy": "^0.1.12",
     "colors": "^1.1.2"
   }
 }
