@@ -1,9 +1,15 @@
 {
   "name": "streamline-runtime",
+  "description": "runtime for streamline.js",
   "version": "1.0.0",
+  "license": "MIT",
+  "homepage": "http://github.com/Sage/streamlinejs",
+  "author": "Bruno Jouhier",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Sage/streamline-runtime.git"
+  },
   "dependencies": {
-    "regenerator-runtime-only": "^0.8.36",
-    "es6-promise": "^3.0.2",
     "colors": "^1.1.2"
   }
 }
