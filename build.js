@@ -28,8 +28,9 @@ function build(src, dst, runtime) {
 	fs.writeFileSync(fsp.join(__dirname, 'lib', dst), code, 'utf8');
 }
 
-build('builtins._js', 'builtins-callbacks.js', 'callbacks');
-build('builtins._js', 'builtins-await.js', 'await');
-build('builtins._js', 'builtins-fibers.js', 'fibers');
-build('builtins._js', 'builtins-generators.js', 'generators');
-build('runtime-generators.js', 'runtime-callbacks.js', 'callbacks');
+['builtins', 'flows'].forEach(function(mod) {
+	['callbacks', 'await', 'fibers', 'generators'].forEach(function(runtime) {
+		build(mod + '-source._js', runtime + '/' + mod + '.js', runtime);
+	});
+})
+build('generators/runtime.js', 'callbacks/runtime.js', 'callbacks');
