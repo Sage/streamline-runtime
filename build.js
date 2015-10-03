@@ -8,7 +8,7 @@ require('babel-plugin-streamline');
 var fs = require('fs');
 var fsp = require('path');
 
-function build(src, dst, runtime) {
+function build(src, dst, runtime, fix) {
 	var babelOptions = {
 		plugins: ['streamline'],
 		whitelist: [],
@@ -25,6 +25,7 @@ function build(src, dst, runtime) {
 	//babelOptions.sourceMaps = "inline";
 	var source = fs.readFileSync(fsp.join(__dirname, 'lib', src), 'utf8');
 	var code =  babel.transform(source, babelOptions).code;
+	if (fix) code = fix(code);
 	fs.writeFileSync(fsp.join(__dirname, 'lib', dst), code, 'utf8');
 }
 
@@ -33,4 +34,6 @@ function build(src, dst, runtime) {
 		build(mod + '-source._js', runtime + '/' + mod + '.js', runtime);
 	});
 })
-build('generators/runtime.js', 'callbacks/runtime.js', 'callbacks');
+build('generators/runtime.js', 'callbacks/runtime.js', 'callbacks', function(code) {
+	return code.replace(/getGlobals\('generators'\)/g, "getGlobals('callbacks')");
+});
