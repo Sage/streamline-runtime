@@ -23,7 +23,7 @@ function build(src, dst, runtime, fix) {
 	babelOptions.filename = src;
 	babelOptions.sourceFileName = src;
 	//babelOptions.sourceMaps = "inline";
-	var source = fs.readFileSync(fsp.join(__dirname, 'lib', src), 'utf8');
+	var source = fs.readFileSync(fsp.join(__dirname, 'src', src), 'utf8');
 	var code =  babel.transform(source, babelOptions).code;
 	if (fix) code = fix(code);
 	fs.writeFileSync(fsp.join(__dirname, 'lib', dst), code, 'utf8');
@@ -31,9 +31,9 @@ function build(src, dst, runtime, fix) {
 
 ['builtins', 'flows'].forEach(function(mod) {
 	['callbacks', 'await', 'fibers', 'generators'].forEach(function(runtime) {
-		build(mod + '-source._js', runtime + '/' + mod + '.js', runtime);
+		build(mod + '._js', runtime + '/' + mod + '.js', runtime);
 	});
 })
-build('generators/runtime.js', 'callbacks/runtime.js', 'callbacks', function(code) {
+build('../lib/generators/runtime.js', 'callbacks/runtime.js', 'callbacks', function(code) {
 	return code.replace(/getGlobals\('generators'\)/g, "getGlobals('callbacks')");
 });
