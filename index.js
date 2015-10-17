@@ -2,7 +2,7 @@
 
 /// !doc
 /// 
-/// # Container for global context
+/// # Global context API
 /// 
 /// The `globals` module is a container for the global `context` object which is maintained across
 /// asynchronous calls.
