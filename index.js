@@ -33,3 +33,13 @@ Object.defineProperty(exports, 'flows', {
 		return require('./lib/flows');
 	}
 });
+
+Object.defineProperty(exports, 'runtime', {
+	get: function() {
+		var util = require('./lib/util');
+		return util.getGlobals().runtime || util.defaultRuntime();
+	}, set: function(value) {
+		var util = require('./lib/util');
+		util.getGlobals(value);
+	}
+});
