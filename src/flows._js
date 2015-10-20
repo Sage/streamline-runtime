@@ -281,7 +281,7 @@
 		});
 	};
 
-	// Obsolete API - use require('streamline/lib/globals').context instead
+	// Obsolete API - use require('streamline-runtime').globals.context instead
 	exports.setContext = function(ctx) {
 		var old = globals.context;
 		globals.context = ctx;
