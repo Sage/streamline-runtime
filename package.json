@@ -1,7 +1,7 @@
 {
   "name": "streamline-runtime",
   "description": "runtime for streamline.js",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "license": "MIT",
   "homepage": "http://github.com/Sage/streamline-runtime",
   "author": {
@@ -12,7 +12,8 @@
     "url": "git://github.com/Sage/streamline-runtime.git"
   },
   "dependencies": {
-    "colors": "^1.1.2"
+    "colors": "^1.1.2",
+    "regenerator": "^0.8.41"
   },
   "optionalDependencies": {
     "fibers": "^1.0.6"
