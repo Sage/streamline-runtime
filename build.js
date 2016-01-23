@@ -9,17 +9,19 @@ var fs = require('fs');
 var fsp = require('path');
 
 function build(src, dst, runtime, fix) {
+	var es2015 = require('babel-preset-es2015');
+	var regeneratorPlugin = es2015.plugins[es2015.plugins.length - 1];
+ 	if (runtime === 'generators') {
+		regeneratorPlugin[1].generators = false;
+	}
 	var babelOptions = {
-		plugins: ['streamline'],
-		whitelist: [],
-		extra: {
-			streamline: {
-				runtime: runtime,
-				verbose: true,
-			},
-		},
+		plugins: [[require('babel-plugin-streamline'), {
+			runtime: runtime,
+			verbose: true,			
+		}]],
+		presets: es2015,
 	};
-	if (runtime === 'callbacks') babelOptions.whitelist.push('regenerator');
+
 	babelOptions.filename = src;
 	babelOptions.sourceFileName = src;
 	//babelOptions.sourceMaps = "inline";
