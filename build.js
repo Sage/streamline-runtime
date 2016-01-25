@@ -11,9 +11,7 @@ var fsp = require('path');
 function build(src, dst, runtime, fix) {
 	var es2015 = require('babel-preset-es2015');
 	var regeneratorPlugin = es2015.plugins[es2015.plugins.length - 1];
- 	if (runtime === 'generators') {
-		regeneratorPlugin[1].generators = false;
-	}
+	regeneratorPlugin[1].generators = (runtime !== 'generators');
 	var babelOptions = {
 		plugins: [[require('babel-plugin-streamline'), {
 			runtime: runtime,
@@ -28,7 +26,9 @@ function build(src, dst, runtime, fix) {
 	var source = fs.readFileSync(fsp.join(__dirname, 'src', src), 'utf8');
 	var code =  babel.transform(source, babelOptions).code;
 	if (fix) code = fix(code);
-	fs.writeFileSync(fsp.join(__dirname, 'lib', dst), code, 'utf8');
+	var outfile = fsp.join(__dirname, 'lib', dst)
+	console.log("creating ", outfile)
+	fs.writeFileSync(outfile, code, 'utf8');
 }
 
 ['builtins', 'flows'].forEach(function(mod) {
