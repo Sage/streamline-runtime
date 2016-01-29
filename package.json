@@ -20,7 +20,7 @@
   },
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/Sage/streamline-runtime/issues"
+    "url": "https://github.com/Sage/streamlinejs/issues"
   },
   "scripts": {
     "prepublish": "node build.js || nodejs build.js"
