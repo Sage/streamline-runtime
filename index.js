@@ -22,9 +22,33 @@
 // This module may be loaded several times so we need a true global (with a secret name!).
 // This implementation also allows us to share the context between modules compiled in callback and fibers mode.
 
+var util; // cache for required module
+
+// API for typescript consumers
+var futureModule = require('./lib/future');
+exports = module.exports = {
+	future: function(thunk) {
+		return futureModule(__filename, 0, null, thunk, 0, null, null, [false]);
+	},
+	promise: function(thunk) {
+		return exports.future(thunk).promise;
+	},
+}
+
+// superseeds old 'globals' API.
+Object.defineProperty(exports, 'context', {
+	get: function() {
+		return (util || (util = require('./lib/util'))).getGlobals().context;
+	},
+	set: function(value) {
+		(util || (util = require('./lib/util'))).getGlobals().context = value;
+	},
+});
+
+// Obsolete API that we don't advertize to typescript.
 Object.defineProperty(exports, 'globals', {
 	get: function() {
-		return require('./lib/util').getGlobals();
+		return (util || (util = require('./lib/util'))).getGlobals();
 	}
 });
 
@@ -36,10 +60,8 @@ Object.defineProperty(exports, 'flows', {
 
 Object.defineProperty(exports, 'runtime', {
 	get: function() {
-		var util = require('./lib/util');
-		return util.getGlobals().runtime || util.defaultRuntime();
+		return (util || (util = require('./lib/util'))).getGlobals().runtime || util.defaultRuntime();
 	}, set: function(value) {
-		var util = require('./lib/util');
-		util.getGlobals(value);
+		(util || (util = require('./lib/util'))).getGlobals(value);
 	}
 });
