@@ -33,8 +33,9 @@ exports._ = {
 	promise: function(thunk) {
 		return exports.future(thunk).promise;
 	},
-	ignore: function(err) {},
-	check: function(err) { if (err) throw err; },
+	run: function(thunk, callback) {
+		thunk(callback || function(err) { if (err) throw err; });
+	},
 };
 
 // APIs that were in flows and globals before and that we are

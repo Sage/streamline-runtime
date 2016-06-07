@@ -3,10 +3,9 @@ declare namespace Streamline {
     interface _ {
         future<R>(fn: (_: Streamline._) => R): (_: Streamline._) => R;
         promise<R>(fn: (_: Streamline._) => R): Promise<R>;
+        run<R>(fn: (_: Streamline._) => R, callback?: (err: any, result?: R) => void): void;
         funnel<T>(_: Streamline._, body: (_: Streamline._) => T): T;
         collect(_: Streamline._, futures: ((_: Streamline._) => any)[]): any[];
-        ignore: Streamline._;
-        check: Streamline._;
         context: any;
         withContext<T extends Function>(body: T, context: any): T;
         handshake(): Handshake;
