@@ -36,6 +36,9 @@ exports._ = {
 	run: function(thunk, callback) {
 		thunk(callback || function(err) { if (err) throw err; });
 	},
+	cast: function(fn) {
+		return fn;
+	},
 };
 
 // APIs that were in flows and globals before and that we are

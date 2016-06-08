@@ -4,7 +4,8 @@ declare namespace Streamline {
         future<R>(fn: (_: Streamline._) => R): (_: Streamline._) => R;
         promise<R>(fn: (_: Streamline._) => R): Promise<R>;
         run<R>(fn: (_: Streamline._) => R, callback?: (err: any, result?: R) => void): void;
-        funnel<T>(_: Streamline._, body: (_: Streamline._) => T): T;
+        cast<T>(fn: (cb: (err?: any, val?: T) => void) => void): (_: _) => T;
+        funnel<R>(limit: number): (_: Streamline._, body: (_: Streamline._) => R) => R;
         collect(_: Streamline._, futures: ((_: Streamline._) => any)[]): any[];
         context: any;
         withContext<T extends Function>(body: T, context: any): T;
@@ -43,12 +44,12 @@ declare interface Promise<T> {
 // Additional Array methods
 // For now don't advertize options object, only number arg
 declare interface Array<T> {
-    //forEach_(_: Streamline._, parallel: number, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => void, thisArg?: any): void;
     forEach_(_: Streamline._, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => void, thisArg?: any): void;
-    //map_(_: Streamline._, parallel: number, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => T, thisArg?: any): T[];
-    map_(_: Streamline._, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => T, thisArg?: any): T[];
-    //filter_(_: Streamline._, parallel: number, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => any, thisArg?: any): T[];
+    forEach_(_: Streamline._, parallel: number, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => void, thisArg?: any): void;
+    map_<U>(_: Streamline._, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => U, thisArg?: any): U[];
+    map_<U>(_: Streamline._, parallel: number, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => U, thisArg?: any): U[];
     filter_(_: Streamline._, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => any, thisArg?: any): T[];
+    filter_(_: Streamline._, parallel: number, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => any, thisArg?: any): T[];
     every_(_: Streamline._, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => boolean, thisArg?: any): boolean;
     some_(_: Streamline._, callbackFn: (_: Streamline._, value: T, index: number, array: T[]) => boolean, thisArg?: any): boolean;
     reduce_<U>(_: Streamline._, callbackFn: (_: Streamline._, previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): U;
