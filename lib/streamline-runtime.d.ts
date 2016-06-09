@@ -4,7 +4,19 @@ declare namespace Streamline {
         future<R>(fn: (_: Streamline._) => R): (_: Streamline._) => R;
         promise<R>(fn: (_: Streamline._) => R): Promise<R>;
         run<R>(fn: (_: Streamline._) => R, callback?: (err: any, result?: R) => void): void;
-        cast<T>(fn: (cb: (err?: any, val?: T) => void) => void): (_: _) => T;
+        cast<R>(fn: (cb: (err?: any, val?: R) => void) => void): (_: _) => R;
+        cast<R, T1>(fn: (cb: (err?: any, val?: R) => void, a1: T1) => void): (_: _, a1: T1) => R;
+        cast<R, T1, T2>(fn: (cb: (err?: any, val?: R) => void, a1: T1, a2: T2) => void): (_: _, a1: T1, a2: T2) => R;
+        cast<R, T1, T2, T3>(fn: (cb: (err?: any, val?: R) => void, a1: T1, a2: T2, a3: T3) => void): (_: _, a1: T1, a2: T2, a3: T3) => R;
+        cast<R, T1, T2, T3, T4>(fn: (cb: (err?: any, val?: R) => void, a1: T1, a2: T2, a3: T3, a4: T4) => void): (_: _, a1: T1, a2: T2, a3: T3, a4: T4) => R;
+        cast<R, T1, T2, T3, T4, T5>(fn: (cb: (err?: any, val?: R) => void, a1: T1, a2: T2, a3: T3, a4: T4, a5: T5) => void): (_: _, a1: T1, a2: T2, a3: T3, a4: T4, a5: T5) => R;
+        cast<T1, R>(a1: T1, fn: (cb: (err?: any, val?: R) => void) => void): (a1: T1, _: _) => R;
+        cast<T1, T2, R>(a1: T1, a2: T2, fn: (cb: (err?: any, val?: R) => void) => void): (a1: T1, a2: T2, _: _) => R;
+        cast<T1, T2, T3, R>(a1: T1, a2: T2, a3: T3, fn: (cb: (err?: any, val?: R) => void) => void): (a1: T1, a2: T2, a3: T3, _: _) => R;
+        cast<T1, T2, T3, T4, R>(a1: T1, a2: T2, a3: T3, a4: T4, fn: (cb: (err?: any, val?: R) => void) => void): (a1: T1, a2: T2, a3: T3, a4: T4, _: _) => R;
+        cast<T1, T2, T3, T4, T5, R>(a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, fn: (cb: (err?: any, val?: R) => void) => void): (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, _: _) => R;
+        // catchall for 7 args or more
+        cast(a1: any, a2: any, a3: any, a4: any, a5: any, a6: any, a7: any, ...a: any[]): (a1: any, a2: any, a3: any, a4: any, a5: any, a6: any, a7: any, ...a: any[]) => any;
         funnel<R>(limit: number): (_: Streamline._, body: (_: Streamline._) => R) => R;
         collect(_: Streamline._, futures: ((_: Streamline._) => any)[]): any[];
         context: any;
