@@ -31,7 +31,7 @@ exports._ = {
 		return futureModule(__filename, 0, null, thunk, 0, null, null, [false]);
 	},
 	promise: function(thunk) {
-		return exports.future(thunk).promise;
+		return exports._.future(thunk).promise;
 	},
 	run: function(thunk, callback) {
 		thunk(callback || function(err) { if (err) throw err; });
