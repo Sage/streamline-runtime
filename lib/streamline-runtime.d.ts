@@ -3,6 +3,7 @@ declare namespace Streamline {
     interface _ {
         future<R>(fn: (_: Streamline._) => R): (_: Streamline._) => R;
         promise<R>(fn: (_: Streamline._) => R): Promise<R>;
+        wait<R>(_: Streamline._, promise: PromiseLike<R>): R;
         run<R>(fn: (_: Streamline._) => R, callback?: (err: any, result?: R) => void): void;
         cast<R>(fn: (cb: (err?: any, val?: R) => void) => void): (_: _) => R;
         cast<R, T1>(fn: (cb: (err?: any, val?: R) => void, a1: T1) => void): (_: _, a1: T1) => R;

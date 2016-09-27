@@ -43,7 +43,7 @@ exports._ = {
 
 // APIs that were in flows and globals before and that we are
 // making directly available as _.funnel, _.collect, ...
-['funnel', 'collect', 'withContext', 'handshake', 'queue', 'sleep'].forEach(function(method) {
+['funnel', 'collect', 'withContext', 'handshake', 'queue', 'sleep', 'wait'].forEach(function(method) {
 	Object.defineProperty(exports._, method, {
 		get: function() {
 			return (flows || (flows = require('./lib/flows')))[method];

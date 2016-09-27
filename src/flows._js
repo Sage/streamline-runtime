@@ -421,5 +421,12 @@
 	/// * `flows.check`  
 	///   callback that throws errors (`function(err) { if (err) throw err; }`)  
 	exports.check = function(err) { if (err) throw err; };
+
+	/// * `flows.wait(_, promise)`  
+	///   waits on a promise - equivalent to `promise.then(_, _)`.  
+	exports.wait = function(_, promise) {
+		if (typeof promise.then !== "function") throw new Error("invalid promise: " + promise);
+		return promise.then(_, _);
+	}
 	
 })(typeof exports !== 'undefined' ? exports : (Streamline.flows = Streamline.flows || {}));
