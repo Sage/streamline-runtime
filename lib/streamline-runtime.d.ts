@@ -35,7 +35,7 @@ declare namespace Streamline {
 
     interface Queue<T> {
         read(_: Streamline._): T;
-        write(_: Streamline._, item: T): any;
+        write(_: Streamline._, item?: T): any;
         put(item: T, force?: boolean): boolean;
         end(): void;
         peek(): T;
