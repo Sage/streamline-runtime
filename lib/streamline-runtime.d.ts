@@ -22,7 +22,7 @@ declare namespace Streamline {
         funnel<R>(limit: number): (_: Streamline._, body: (_: Streamline._) => R) => R;
         collect(_: Streamline._, futures: ((_: Streamline._) => any)[]): any[];
         context: any;
-        withContext<T extends Function>(body: T, context: any): T;
+        withContext<T extends Function>(body: T, context?: any): T;
         handshake(): Handshake;
         queue<T>(max?: number): Queue<T>;
         sleep(_: Streamline._, millis: number): void;
