@@ -1,7 +1,7 @@
 {
   "name": "streamline-runtime",
   "description": "runtime for streamline.js",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "license": "MIT",
   "homepage": "http://github.com/Sage/streamline-runtime",
   "author": {
