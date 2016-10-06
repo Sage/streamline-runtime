@@ -27,9 +27,6 @@
   "bugs": {
     "url": "https://github.com/Sage/streamlinejs/issues"
   },
-  "typescript": {
-    "definitions": "lib/streamline-runtime.d.ts"
-  },
   "scripts": {
     "prepublish": "node build.js || nodejs build.js"
   }
