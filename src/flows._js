@@ -32,6 +32,7 @@
 (function(exports) {
 	"use strict";
 	var globals = require('../util').getGlobals();
+
 	/// !nodoc
 	/// Obsolete API
 	/// 
@@ -160,8 +161,8 @@
 	/// The funnel can be closed with `fun.close()`.  
 	/// When a funnel is closed, the operations that are still in the funnel will continue but their callbacks
 	/// won't be called, and no other operation will enter the funnel.
-	exports.funnel = require('streamline-runtime/lib/funnel');
-
+	exports.funnel = require('./builtins').funnel;
+	
 	/// ## handshake and queue
 	/// * `hs = flows.handshake()`  
 	///   allocates a simple semaphore that can be used to do simple handshakes between two tasks.  

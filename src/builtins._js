@@ -30,8 +30,61 @@
 				else q.push(cb);
 			};
 		};
+		
+	var funnel = function(max) {
+		max = max == null ? -1 : max;
+		if (max === 0) max = exports.funnel.defaultSize;
+		if (typeof max !== "number") throw new Error("bad max number: " + max);
+		var queue = [],
+			active = 0,
+			closed = false;
 
-	var funnel = require('../funnel');
+		function _doOne() {
+			var current = queue.splice(0, 1)[0];
+			if (!current.cb) return current.fn();
+			active++;
+			current.fn(function(err, result) {
+				active--;
+				if (!closed) {
+					current.cb(err, result);
+					while (active < max && queue.length > 0) _doOne();
+				}
+			});
+		}
+
+		function overflow(callback, fn) {
+			queue.push({
+				fn: fn,
+				cb: callback
+			});
+		}
+		
+		var fun = function(_, fn) {
+			//console.log("FUNNEL: active=" + active + ", queued=" + queue.length);
+			if (max < 0 || max === Infinity) return fn(_);
+			// optimization to avoid _ -> callback transition in fibers mode when the funnel is available.
+			if (active < max) {
+				active++;
+				try {
+					return fn(_);
+				} finally {
+					active--;
+					while (active < max && queue.length > 0) _doOne();
+				}
+			} else {
+				return overflow(_, fn);
+			}
+		}
+
+		fun.close = function() {
+			queue = [];
+			closed = true;
+		};
+		return fun;
+	};
+	funnel.defaultSize = 4;
+
+	exports.funnel = funnel;
 
 	function _parallel(options) {
 		if (typeof options === "number") return options;
