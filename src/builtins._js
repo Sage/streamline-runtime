@@ -40,7 +40,7 @@
 			closed = false;
 
 		function _doOne() {
-			var current = queue.splice(0, 1)[0];
+			var current = queue.shift();
 			if (!current.cb) return current.fn();
 			active++;
 			current.fn(function(err, result) {
