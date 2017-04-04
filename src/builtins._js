@@ -9,6 +9,8 @@
 (function(exports) {
 	"use strict";
 	var VERSION = 3;
+	var globals;
+
 	
 	var future = function(fn, args, i) {
 			var err, result, done, q = [],
@@ -31,20 +33,27 @@
 			};
 		};
 		
-	var funnel = function(max) {
+	var funnel = function(max, options) {
 		max = max == null ? -1 : max;
 		if (max === 0) max = exports.funnel.defaultSize;
 		if (typeof max !== "number") throw new Error("bad max number: " + max);
+		options = options || {};
+
 		var queue = [],
 			active = 0,
 			closed = false;
+
+		globals = globals || require('../util').getGlobals();
+		var context = undefined;
 
 		function _doOne() {
 			var current = queue.shift();
 			if (!current.cb) return current.fn();
 			active++;
+			context = globals.context;
 			current.fn(function(err, result) {
 				active--;
+				context = undefined;
 				if (!closed) {
 					current.cb(err, result);
 					while (active < max && queue.length > 0) _doOne();
@@ -58,17 +67,32 @@
 				cb: callback
 			});
 		}
+
+		function reentering() {
+			if (!context) return false;
+			for (var cx = globals.context; cx; cx = Object.getPrototypeOf(cx)) {
+				if (context === cx) return true;
+			}
+			return false;
+		}
 		
 		var fun = function(_, fn) {
 			//console.log("FUNNEL: active=" + active + ", queued=" + queue.length);
 			if (max < 0 || max === Infinity) return fn(_);
+			// test reentrancy, only if max is 1
+			if (max === 1 && reentering()) {
+				if (options.reentrant) return fn(_);
+				else throw new Error("funnel is not reentrant");
+			}
 			// optimization to avoid _ -> callback transition in fibers mode when the funnel is available.
 			if (active < max) {
 				active++;
+				context = globals.context;
 				try {
 					return fn(_);
 				} finally {
 					active--;
+					context = undefined;
 					while (active < max && queue.length > 0) _doOne();
 				}
 			} else {
