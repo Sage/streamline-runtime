@@ -6,32 +6,32 @@
 /// 
 /// # Streamline built-ins
 ///  
-(function(exports) {
+(function (exports) {
 	"use strict";
 	var VERSION = 3;
-	
-	var future = function(fn, args, i) {
-			var err, result, done, q = [],
-				self = this;
-			args = Array.prototype.slice.call(args);
-			args[i] = function(e, r) {
-				err = e;
-				result = r;
-				done = true;
-				q && q.forEach(function(f) {
-					f.call(self, e, r);
-				});
-				q = null;
-			};
-			fn.apply(this, args);
-			return function F(cb) {
-				if (!cb) return F;
-				if (done) cb.call(self, err, result);
-				else q.push(cb);
-			};
+
+	var future = function (fn, args, i) {
+		var err, result, done, q = [],
+			self = this;
+		args = Array.prototype.slice.call(args);
+		args[i] = function (e, r) {
+			err = e;
+			result = r;
+			done = true;
+			q && q.forEach(function (f) {
+				f.call(self, e, r);
+			});
+			q = null;
 		};
-		
-	var funnel = function(max) {
+		fn.apply(this, args);
+		return function F(cb) {
+			if (!cb) return F;
+			if (done) cb.call(self, err, result);
+			else q.push(cb);
+		};
+	};
+
+	var funnel = function (max) {
 		max = max == null ? -1 : max;
 		if (max === 0) max = exports.funnel.defaultSize;
 		if (typeof max !== "number") throw new Error("bad max number: " + max);
@@ -43,7 +43,7 @@
 			var current = queue.shift();
 			if (!current.cb) return current.fn();
 			active++;
-			current.fn(function(err, result) {
+			current.fn(function (err, result) {
 				active--;
 				if (!closed) {
 					current.cb(err, result);
@@ -58,8 +58,8 @@
 				cb: callback
 			});
 		}
-		
-		var fun = function(_, fn) {
+
+		var fun = function (_, fn) {
 			//console.log("FUNNEL: active=" + active + ", queued=" + queue.length);
 			if (max < 0 || max === Infinity) return fn(_);
 			// optimization to avoid _ -> callback transition in fibers mode when the funnel is available.
@@ -76,7 +76,7 @@
 			}
 		}
 
-		fun.close = function() {
+		fun.close = function () {
 			queue = [];
 			closed = true;
 		};
@@ -134,7 +134,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, options, fn, thisObj) {
+		value: function (_, options, fn, thisObj) {
 			if (typeof options === "function") {
 				thisObj = fn;
 				fn = options;
@@ -161,7 +161,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, options, fn, thisObj) {
+		value: function (_, options, fn, thisObj) {
 			if (typeof options === "function") {
 				thisObj = fn;
 				fn = options;
@@ -178,8 +178,8 @@
 				}
 			} else {
 				var fun = funnel(par);
-				result = this.map(function(elt, i, arr) {
-					return fun(!_, function(_) {
+				result = this.map(function (elt, i, arr) {
+					return fun(!_, function (_) {
 						return fn.call(thisObj, _, elt, i, arr);
 					});
 				});
@@ -197,7 +197,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, options, fn, thisObj) {
+		value: function (_, options, fn, thisObj) {
 			if (typeof options === "function") {
 				thisObj = fn;
 				fn = options;
@@ -215,7 +215,7 @@
 					}
 				}
 			} else {
-				this.map_(_, par, function(_, elt, i, arr) {
+				this.map_(_, par, function (_, elt, i, arr) {
 					if (fn.call(thisObj, _, elt, i, arr)) result.push(elt);
 				}, thisObj);
 			}
@@ -229,7 +229,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, options, fn, thisObj) {
+		value: function (_, options, fn, thisObj) {
 			if (typeof options === "function") {
 				thisObj = fn;
 				fn = options;
@@ -245,8 +245,8 @@
 				}
 			} else {
 				var fun = funnel(par);
-				var futures = this.map(function(elt, i, arr) {
-					return fun(!_, function(_) {
+				var futures = this.map(function (elt, i, arr) {
+					return fun(!_, function (_) {
 						return fn.call(thisObj, _, elt, i, arr);
 					});
 				});
@@ -267,7 +267,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, options, fn, thisObj) {
+		value: function (_, options, fn, thisObj) {
 			if (typeof options === "function") {
 				thisObj = fn;
 				fn = options;
@@ -282,8 +282,8 @@
 				}
 			} else {
 				var fun = funnel(par);
-				var futures = this.map(function(elt, i, arr) {
-					return fun(!_, function(_) {
+				var futures = this.map(function (elt, i, arr) {
+					return fun(!_, function (_) {
 						return fn.call(thisObj, _, elt, i, arr);
 					});
 				});
@@ -304,7 +304,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, fn, v, thisObj) {
+		value: function (_, fn, v, thisObj) {
 			thisObj = thisObj !== undefined ? thisObj : this;
 			var len = this.length;
 			for (var i = 0; i < len; i++) {
@@ -320,7 +320,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, fn, v, thisObj) {
+		value: function (_, fn, v, thisObj) {
 			thisObj = thisObj !== undefined ? thisObj : this;
 			var len = this.length;
 			for (var i = len - 1; i >= 0; i--) {
@@ -338,7 +338,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(_, compare, beg, end) {
+		value: function (_, compare, beg, end) {
 			var array = this;
 			beg = beg || 0;
 			end = end == null ? array.length - 1 : end;
@@ -395,7 +395,7 @@
 		configurable: true,
 		writable: true,
 		enumerable: false,
-		value: function(callback, thisObj, args, index) {
+		value: function (callback, thisObj, args, index) {
 			args = Array.prototype.slice.call(args, 0);
 			args.splice(index != null && index >= 0 ? index : args.length, 0, callback);
 			return this.apply(thisObj, args);
