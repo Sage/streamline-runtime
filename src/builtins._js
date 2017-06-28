@@ -183,7 +183,7 @@
 				for (var j = 0; j < par; j++) futures[j] = (_ => {
 					while (i < this.length) {
 						var k = i++;
-						result[k] = fn.call(thisObj, _, this[k], this);
+						result[k] = fn.call(thisObj, _, this[k], k, this);
 					}
 				})(!_);
 				for (var j = 0; j < par; j++) futures[j](_);
