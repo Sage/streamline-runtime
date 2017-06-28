@@ -177,15 +177,16 @@
 					if (has.call(this, i)) result[i] = fn.call(thisObj, _, this[i], i, this);
 				}
 			} else {
-				var fun = funnel(par);
-				result = this.map(function (elt, i, arr) {
-					return fun(!_, function (_) {
-						return fn.call(thisObj, _, elt, i, arr);
-					});
-				});
-				for (i = 0; i < len; i++) {
-					if (has.call(this, i)) result[i] = result[i](_);
-				}
+				var futures = [];
+				i = 0;
+				result = new Array(len);
+				for (var j = 0; j < par; j++) futures[j] = (_ => {
+					while (i < this.length) {
+						var k = i++;
+						result[k] = fn.call(thisObj, _, this[k], this);
+					}
+				})(!_);
+				for (var j = 0; j < par; j++) futures[j](_);
 			}
 			return result;
 		}
