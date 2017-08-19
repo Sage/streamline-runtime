@@ -180,6 +180,9 @@
 				var futures = [];
 				i = 0;
 				result = new Array(len);
+				if (par <= 0) par = len;
+				// cap with a hard limit to avoid memory issue with fibers
+				par = Math.min(par, 256);
 				for (var j = 0; j < par; j++) futures[j] = (_ => {
 					while (i < this.length) {
 						var k = i++;
