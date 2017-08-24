@@ -18,8 +18,8 @@ declare namespace Streamline {
         cast<T1, T2, T3, T4, T5, R>(a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, fn: (cb: (err?: any, val?: R) => void) => void): (a1: T1, a2: T2, a3: T3, a4: T4, a5: T5, _: _) => R;
         // catchall for 7 args or more
         cast(a1: any, a2: any, a3: any, a4: any, a5: any, a6: any, a7: any, ...a: any[]): (a1: any, a2: any, a3: any, a4: any, a5: any, a6: any, a7: any, ...a: any[]) => any;
-        funnel<R>(limit: number): (_: Streamline._, body: (_: Streamline._) => R | undefined) => R | undefined;
-        funnel<R>(limit: number): (_: Streamline._, body: (_: Streamline._) => R) => R;
+        funnel(limit: number): <R>(_: Streamline._, body: (_: Streamline._) => R | undefined) => R | undefined;
+        funnel(limit: number): <R>(_: Streamline._, body: (_: Streamline._) => R) => R;
         collect(_: Streamline._, futures: ((_: Streamline._) => any)[]): any[];
         context: any;
         withContext<T extends Function>(body: T, context?: any): T;
