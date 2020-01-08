@@ -402,9 +402,10 @@
 	///   The previous context will be restored when the function returns (or throws).  
 	///   returns the wrapped function.
 	exports.withContext = function (fn, cx) {
+		cx = cx || Object.assign({}, globals.context);
 		return function () {
 			var oldContext = globals.context;
-			globals.context = cx || Object.create(oldContext);
+			globals.context = cx;
 			try {
 				return fn.apply(this, arguments);
 			} finally {
